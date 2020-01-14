@@ -31,9 +31,22 @@ if __name__ == '__main__':
 ### Reading config by viper
 
 ```python
-viper.set_config_path(_absolute_path('test.yml'))
-viper.read_config()
-self.assertEqual('foo', viper.get('hello.name'))
+import tempfile
+import viper
+
+yaml_example = b'''
+hello:
+  name: foo
+'''
+
+if __name__ == '__main__':
+    with tempfile.NamedTemporaryFile(suffix='.yaml') as temp:
+        temp.write(yaml_example)
+        temp.seek(0)
+        viper.set_config_path(temp.name)
+        viper.read_config()
+        assert viper.get('hello.name') == 'foo'
+
 ```
 
 ## TODO
