@@ -8,6 +8,11 @@ _viper = Viper()
 _kind = inspect.Parameter.KEYWORD_ONLY
 
 
+def reset():
+    global _viper
+    _viper = Viper()
+
+
 def bind_flags(flags: [Flag]):
     def decorate(func):
         params = []
@@ -45,3 +50,15 @@ def set_config_path(p: str):
 
 def read_config():
     _viper.read_config()
+
+
+def set_config_type(config_type: str):
+    _viper.set_config_type(config_type)
+
+
+def read_remote_config():
+    _viper.read_remote_config()
+
+
+def set_remote_provider(provider: str, host: str, port: int, path: str):
+    _viper.set_remote_provider(provider, host, port, path)

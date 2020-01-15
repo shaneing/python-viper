@@ -7,6 +7,7 @@ with open('README.md', 'r') as f:
 
 DEPENDENCIES = [
     'pyyaml',
+    'python-consul'
 ]
 
 setup(
