@@ -51,4 +51,5 @@ if __name__ == '__main__':
 
 ## TODO
 
-- [ ] Read remote config
+- [x] Read remote config
+- [ ] Unmarshal config
