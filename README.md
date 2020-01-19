@@ -10,26 +10,6 @@ pip install py-viper
 
 ## Usage
 
-### Using viper.bind_flags in fire
-
-```python
-import fire
-import viper
-
-
-@viper.bind_flags(flags=[
-    viper.Flag(name='name', value='foo', usage='Indicate name'),
-])
-def hello():
-    return "Hello %s!" % viper.get('name')
-
-
-if __name__ == '__main__':
-    fire.Fire(hello)
-```
-
-### Reading config by viper
-
 ```python
 import tempfile
 import viper
@@ -39,6 +19,15 @@ hello:
   name: foo
 '''
 
+
+class Hello:
+    name = ''
+
+
+class Config:
+    hello = Hello
+
+
 if __name__ == '__main__':
     with tempfile.NamedTemporaryFile(suffix='.yaml') as temp:
         temp.write(yaml_example)
@@ -47,9 +36,25 @@ if __name__ == '__main__':
         viper.read_config()
         assert viper.get('hello.name') == 'foo'
 
+        conf = Config()
+        viper.unmarshal(conf)
+        assert conf.hello.name == 'foo'
 ```
+
+You also can using remote config instead of local config:
+
+```python
+viper.set_config_type('yml')
+viper.set_remote_provider('consul', '127.0.0.1', 8500, 'hello')
+viper.read_remote_config()
+```
+
+Note:
+
+- The config type only support for *yaml* or *yml*.
+- The remote config only support for *consul*.
 
 ## TODO
 
 - [x] Read remote config
-- [ ] Unmarshal config
+- [x] Unmarshal config
