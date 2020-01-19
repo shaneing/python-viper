@@ -87,3 +87,19 @@ class Viper(object):
     def set_config_type(self, config_type: str):
         self._config_type = config_type
 
+    def unmarshal(self, o: object):
+        if self._remote_provider is not None:
+            self._unmarshal_dict(self._kv, o)
+        else:
+            self._unmarshal_dict(self._config, o)
+
+    def _unmarshal_dict(self, d: dict, cls: object):
+        for (k, v) in d.items():
+            if not hasattr(cls, k):
+                continue
+
+            attr = getattr(cls, k)
+            if isinstance(attr, type):
+                self._unmarshal_dict(d[k], attr)
+            else:
+                setattr(cls, k, v)

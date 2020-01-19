@@ -62,3 +62,8 @@ def read_remote_config():
 
 def set_remote_provider(provider: str, host: str, port: int, path: str):
     _viper.set_remote_provider(provider, host, port, path)
+
+
+def unmarshal(o: object):
+    _viper.unmarshal(o)
+
