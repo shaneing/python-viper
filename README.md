@@ -41,7 +41,7 @@ if __name__ == '__main__':
         assert conf.hello.name == 'foo'
 ```
 
-You also can using remote config instead of local config:
+You can also use remote config instead of local config:
 
 ```python
 viper.set_config_type('yml')
@@ -51,8 +51,8 @@ viper.read_remote_config()
 
 Note:
 
-- The config type only support for *yaml* or *yml*.
-- The remote config only support for *consul*.
+- The config type only supports *yaml* or *yml*.
+- The backend of remote config only supports *consul*.
 
 ## TODO
 
