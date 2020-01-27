@@ -58,3 +58,4 @@ Note:
 
 - [x] Read remote config
 - [x] Unmarshal config
+- [x] Add support for JSON
