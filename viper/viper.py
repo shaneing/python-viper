@@ -1,11 +1,12 @@
 import collections
+import json
 import os
 
 from yaml import Loader, load as yaml_load
 from .remote import get_remote_config, RemoteProvider
 
 
-supported_config_type = {'yaml', 'yml'}
+supported_config_type = {'yaml', 'yml', 'json'}
 supported_remote_providers = {'consul'}
 
 
@@ -70,6 +71,8 @@ class Viper(object):
         config_type = self._get_config_type()
         if config_type == 'yaml' or config_type == 'yml':
             d.update(yaml_load(s, Loader=Loader))
+        elif config_type == 'json':
+            d.update(json.loads(s, encoding='utf-8'))
 
     def _get_config_type(self):
         if self._config_type is not None:
@@ -85,6 +88,9 @@ class Viper(object):
         return ''
 
     def set_config_type(self, config_type: str):
+        if config_type not in supported_config_type:
+            raise Exception('Unsupported config type: {}'.format(config_type))
+
         self._config_type = config_type
 
     def unmarshal(self, o: object):
