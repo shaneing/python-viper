@@ -1,7 +1,10 @@
+import base64
+import json
 import os
 import unittest
+import mock
+import requests
 import viper
-from mock import patch
 
 
 def _absolute_path(p):
@@ -12,7 +15,7 @@ TEST_DATA = {
     'LockIndex': 0,
     'Key': 'hello',
     'Flags': 0,
-    'Value': b'hello:\n  name: foo',
+    'Value': base64.b64encode(b'hello:\n  name: foo').decode('utf-8'),
     'CreateIndex': 51,
     'ModifyIndex': 51
 }
@@ -39,8 +42,7 @@ class TestViper(unittest.TestCase):
 
     @patch('requests.get')
     def test_remote_config(self, mock_get):
-        mock_get.return_value.json.return_value = [TEST_DATA]
-        mock_get.return_value.status_code = 200
+        mock_get.return_value = mock.Mock(text=json.dumps([TEST_DATA]), headers={'X-Consul-Index': 0}, status_code=200)
         viper.set_config_type('yml')
         viper.set_remote_provider('consul', '127.0.0.1', 8500, 'hello')
         viper.read_remote_config()
